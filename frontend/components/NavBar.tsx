@@ -9,13 +9,13 @@ export default function NavBar() {
         </NavbarBrand>
         <NavbarContent className="hidden sm:flex gap-3" justify="start">
           <NavbarItem>
-            <Link color="foreground" href="music">
-              Music
+            <Link color="foreground" href="marketplace">
+              Marketplace
             </Link>
           </NavbarItem>
           <NavbarItem isActive>
-            <Link href="art" color="foreground">
-              Art
+            <Link href="art" color="secondary">
+              Mixer
             </Link>
           </NavbarItem>
           <NavbarItem>

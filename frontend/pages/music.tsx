@@ -1,6 +1,6 @@
 import NavbarItem from "@/components/NavBar";
 
-export default function Music() {
+export default function marketplace() {
     return (
         <div className="bg-black">
             <NavbarItem />
