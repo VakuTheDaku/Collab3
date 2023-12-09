@@ -1,9 +1,9 @@
-import NavbarItem from "@/components/NavBar";
+import NavbarBar from "@/components/NavBar";
 
 export default function Home() {
   return (
     <div className="bg-black">
-      <NavbarItem />
+      <NavbarBar />
       
     </div>
   )
