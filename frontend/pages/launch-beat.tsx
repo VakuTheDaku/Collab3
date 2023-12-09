@@ -6,10 +6,11 @@ import { Button, ButtonGroup, Divider } from "@nextui-org/react";
 import { useState } from "react";
 
 export default function Sell() {
-
+  const [plagiarism, setPlagiarism] = useState<number>();
   const launchTypes = ["Mint", "Raffles", "Auctions"]
   const [selected, setSelected] = useState<any>()
   const [step, setStep] = useState<number>(0)
+  const [iscopied, setIscopied] = useState(undefined)
 
   return (
     <div className="bg-black">
@@ -23,7 +24,7 @@ export default function Sell() {
             <div className="text-xl text-white">
               Upload your beat/music as wav file
             </div>
-            <UploadBeat setStep={setStep} />
+            <UploadBeat setStep={setStep} plagiarism={plagiarism} setPlagiarism={setPlagiarism} setIscopied={setIscopied}/>
           </div>
           <Divider orientation="horizontal" className="bg-white text-white my-4"/>
           <div className={step < 2 ? "opacity-40 blur-sm" : "blur-0 opacity-100"}>
@@ -33,11 +34,10 @@ export default function Sell() {
             <div className="text-xl text-white">
               Wait while we check for plagiarism, Extreme similarities will be reported. Read our terms and conditions.
             </div>
-            {step === 2 && <Loader setStep={setStep} step={step} />}
+            {step === 2 && <Loader setStep={setStep} step={step} iscopied={iscopied} plagiarism={plagiarism}/>}
           </div>
           <Divider orientation="horizontal" className="bg-white text-white my-4"/>
           <div className={step < 3 ? "opacity-40 blur-sm" : "blur-0 opacity-100"}>
-            <p className='text-success'>You are good to go!</p>
             <div className="text-2xl">
               STEP 3 :
             </div>
