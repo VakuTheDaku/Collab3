@@ -5,8 +5,6 @@ import librosa
 import numpy as np
 import IPython.display as ipd
 import soundfile as sf
-from pydub import AudioSegment
-from librosa import sequence
 from .utils import compute_spectrogram, split_and_fingerprint
 
 class SplitBackground(ListAPIView):
@@ -38,7 +36,8 @@ class SplitBackground(ListAPIView):
    
         
 class CompareSongs(ListAPIView):
-    pass
+    def post(self, request):
+        pass
 
 
 class ProcessAudioAPI(ListAPIView):

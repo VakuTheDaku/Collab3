@@ -57,3 +57,25 @@ def compute_spectrogram(audio_file, segment_duration_ms=10000):
         spectrograms.append(S)
 
     return spectrograms
+
+def compare_all_pairs_spectrograms(spec1, spec2):
+    similarities = np.zeros((len(spec1), len(spec2)))
+
+    # Compare all possible pairs of spectrograms
+    for i, j in itertools.product(range(len(spec1)), range(len(spec2))):
+        similarity = compare_spectrograms(spec1[i], spec2[j])
+        similarities[i, j] = similarity
+
+    return similarities
+
+# Your existing compare_spectrograms function
+def compare_spectrograms(spec1, spec2):
+    flat_spec1 = spec1.flatten()
+    flat_spec2 = spec2.flatten()
+    similarity = np.dot(flat_spec1, flat_spec2) / (np.linalg.norm(flat_spec1) * np.linalg.norm(flat_spec2))
+    d = 0
+
+
+    for i in range(len(similarity)):
+        d += sum(similarity[i])/len(similarity[i])
+    return d/len(similarity) 
