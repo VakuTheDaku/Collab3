@@ -1,3 +1,4 @@
 from django.db import models
 
-# Create your models here.
+class SpectrogramModel(models.Model):
+    spectrogram = models.FileField(upload_to='spectrogram/', null=True, blank=True)

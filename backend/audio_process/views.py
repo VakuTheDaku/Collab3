@@ -5,7 +5,10 @@ import librosa
 import numpy as np
 import IPython.display as ipd
 import soundfile as sf
-from .utils import compute_spectrogram, split_and_fingerprint
+from .utils import compute_spectrogram, split_and_fingerprint, compare_all_pairs_spectrograms
+import base64
+from .models import SpectrogramModel
+import pickle
 
 class SplitBackground(ListAPIView):
 
@@ -35,17 +38,44 @@ class SplitBackground(ListAPIView):
             return Response({'status': False})
    
         
-class CompareSongs(ListAPIView):
-    def post(self, request):
-        pass
 
 
 class ProcessAudioAPI(ListAPIView):
     def post(self, request):
         audio = request.data['audio']
-        fingerprints = split_and_fingerprint(audio)
+        fingerprints = pickle.dumps(split_and_fingerprint(audio))
+
+        spectrogram = np.array(compute_spectrogram(audio))
+        
+        
+        spectrogram_data = SpectrogramModel.objects.all()
+        max_id = 0
+        for spec in spectrogram_data:
+            max_id = max(max_id, spec.id)
+            with open(spec.spectrogram.path, 'rb') as f:
+                spec_data = np.load(f)
+                similarity = compare_all_pairs_spectrograms(spec_data, spectrogram)
+
+                if similarity > 0.5:
+                    data = {
+                        'status': True,
+                        'hasPlagiarism': True,
+                    }
+                    return Response(data)
+        with open(f'./spectrogram/spectrogram_{max_id}.npy', 'wb') as f:
+            np.save(f, spectrogram)
+        spectrogram_model = SpectrogramModel.objects.create(
+            spectrogram=f'./spectrogram/spectrogram_{max_id}.npy'
+        )
+        spectrogram_model.save()
+
+       
         data = {
-            'fingerprints': fingerprints
+            'status': True,
+            'hasPlagiarism': False,
+            'fingerprints': base64.b64encode(fingerprints),
+            'spectrogram': base64.b64encode(spectrogram),
+
         }
         
         return Response(data)
