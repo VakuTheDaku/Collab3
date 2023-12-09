@@ -9,6 +9,7 @@ from .utils import compute_spectrogram, split_and_fingerprint, compare_all_pairs
 import base64
 from .models import SpectrogramModel
 import pickle
+from pydub import AudioSegment
 
 class SplitBackground(ListAPIView):
 
@@ -80,3 +81,20 @@ class ProcessAudioAPI(ListAPIView):
         }
         
         return Response(data)
+
+class OverlayAudio(ListAPIView):
+    def post(self, request):
+        audio1 = request.data['audio1']
+        audio2 = request.data['audio2']
+
+        audio_seg1 = AudioSegment.from_file(audio1)
+        audio_seg2 = AudioSegment.from_file(audio2)
+
+        audio_seg1.overlay(audio_seg2)
+        audio_seg1.export('/tmp/Overlay.mp3', format='mp3')
+
+        response = FileResponse(open('/tmp/Overlay.mp3', 'rb'))
+        response['Content-Disposition'] = 'attachment; filename="Overlay.mp3"'
+        return response
+
+        
