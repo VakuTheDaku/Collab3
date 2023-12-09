@@ -1,7 +1,7 @@
 const main = async () => {
 
   const contractNames = [
-      
+      "MusicNFT"
   ];
 
   for(let i = 0; i<contractNames.length; i++){
