@@ -7,6 +7,8 @@ import IPython.display as ipd
 import soundfile as sf
 from pydub import AudioSegment
 from librosa import sequence
+from .utils import compute_spectrogram, split_and_fingerprint
+
 class SplitBackground(ListAPIView):
 
     def post(self, request):
@@ -36,51 +38,15 @@ class SplitBackground(ListAPIView):
    
         
 class CompareSongs(ListAPIView):
+    pass
 
-    def load_audio(self, audio_file):
-        audio = AudioSegment.from_file(audio_file)
-        return np.array(audio.get_array_of_samples(), dtype=np.float32) / 32768.0
 
-    def extract_features(self, audio):
-        chroma = librosa.feature.chroma_stft(y=audio, sr=44100)
-        return chroma
-
-    def calculate_similarity(self, features1, features2):
-        # Use dynamic time warping for sequence alignment
-        alignment, similarity_score = sequence.dtw(features1, features2)
-
-        return similarity_score
-
-    def post(self, request, *args, **kwargs):
-        try:
-            print(request.FILES)
-            # Get the uploaded files
-            song1_file = request.FILES.get('song1')
-            song2_file = request.FILES.get('song2')
-
-            # Load audio files
-            audio1 = self.load_audio(song1_file)
-            audio2 = self.load_audio(song2_file)
-
-            # Extract features
-            features1 = self.extract_features(audio1)
-            features2 = self.extract_features(audio2)
-
-            # Calculate similarity score using DTW
-            similarity_score = self.calculate_similarity(features1, features2)
-
-            # Define a threshold for plagiarism detection
-            threshold = 10000  # Adjust this value based on your requirements
-
-            # Check if the similarity score exceeds the threshold
-            is_plagiarized = similarity_score < threshold
-
-            is_plagiarized = np.count_nonzero(is_plagiarized) / len(is_plagiarized)
-
-            return Response({
-                'status': True,
-                'is_plagiarized': is_plagiarized
-            })
-        except Exception as e:
-            print(e)
-            return Response({'status': False, 'error': str(e)})
+class ProcessAudioAPI(ListAPIView):
+    def post(self, request):
+        audio = request.data['audio']
+        fingerprints = split_and_fingerprint(audio)
+        data = {
+            'fingerprints': fingerprints
+        }
+        
+        return Response(data)
