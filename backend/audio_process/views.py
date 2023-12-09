@@ -60,6 +60,7 @@ class ProcessAudioAPI(ListAPIView):
                     data = {
                         'status': True,
                         'hasPlagiarism': True,
+                        'similarity': similarity,
                     }
                     return Response(data)
         with open(f'./spectrogram/spectrogram_{max_id}.npy', 'wb') as f:

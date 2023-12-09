@@ -60,13 +60,15 @@ def compute_spectrogram(audio_file, segment_duration_ms=10000):
 
 def compare_all_pairs_spectrograms(spec1, spec2):
 
+    similarity = 0
+
     # Compare all possible pairs of spectrograms
     for i, j in itertools.product(range(len(spec1)), range(len(spec2))):
         similarity = compare_spectrograms(spec1[i], spec2[j])
         if similarity > 0.6:
-            return True
+            return similarity
 
-    return False
+    return similarity
 
 # Your existing compare_spectrograms function
 def compare_spectrograms(spec1, spec2):
