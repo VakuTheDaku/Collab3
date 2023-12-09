@@ -1,14 +1,15 @@
 import React, { useState } from "react";
 import { Tabs, Tab, Card, CardBody, CardHeader, Dropdown, DropdownTrigger, Button, Input } from "@nextui-org/react";
+import ContractInteraction from "./contractInteraction";
 
 export default function LaunchType() {
 
     const [mintOptions, setMintOptions] = useState<any>({
-        quantity: 0
+        price: 0
     });
 
     const [raffleOptions, setRaffleOptions] = useState<any>({
-        quantity: 0
+        price: 0
     });
 
     const handleMintInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -55,15 +56,15 @@ export default function LaunchType() {
                 <Tab key="mint" title="Mint">
                     <Card className="bg-black text-white">
                         <CardBody>
-                            Live minting for your NFTs
-                            <div>
+                            Live minting your NFTs
+                            <div className="mt-2">
                                 <form onSubmit={handleMintSubmit} className="bg-black">
-                                    <Input onChange={handleMintInputChange} name="quantity" type="number" label="Quantity" placeholder="Enter your quantity or keep empty/0 for infinite mints" className="w-1/2 bg-opacity-10 bg-white" />
-
+                                    <Input onChange={handleMintInputChange} name="price" type="number" label="Price" className="w-1/2 bg-opacity-10 bg-slate-200" />
                                     <Button className="mt-2" variant="flat" color="secondary" type="submit">Launch Mint</Button>
                                 </form>
                             </div>
                         </CardBody>
+                        <ContractInteraction />
                     </Card>
                 </Tab>
                 <Tab key="raffles" title="Raffles">
@@ -72,7 +73,7 @@ export default function LaunchType() {
                             Raffle your beat
                             <div>
                                 <form onSubmit={handleRaffleSubmit} className="bg-black">
-                                    <Input onChange={handleRaffleInputChange} name="quantity" type="number" label="Quantity" placeholder="Enter your quantity or keep empty/0 for infinite mints" className="w-1/2 bg-opacity-10 bg-white" />
+                                    <Input onChange={handleRaffleInputChange} name="price" type="number" label="price" placeholder="Enter your price or keep empty/0 for infinite mints" className="w-1/2 bg-opacity-10 bg-white" />
                                     <Button className="mt-2" variant="flat" color="secondary" type="submit">Launch raffle</Button>
                                 </form>
                             </div>
