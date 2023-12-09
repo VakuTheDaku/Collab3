@@ -9,7 +9,7 @@ export default function Sell() {
 
   const launchTypes = ["Mint", "Raffles", "Auctions"]
   const [selected, setSelected] = useState<any>()
-  const [step, setStep] = useState<number>(4)
+  const [step, setStep] = useState<number>(0)
 
   return (
     <div className="bg-black">

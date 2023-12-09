@@ -1,6 +1,6 @@
 // pages/api/upload.ts
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { uploadAudio } from '../../utils/uploadAudio';
+import { uploadAudio } from '../utils/uploadAudio';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'POST') {

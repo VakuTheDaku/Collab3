@@ -1,6 +1,8 @@
-import {Navbar, NavbarBrand, NavbarContent, NavbarItem, Link, Input, DropdownItem, DropdownTrigger, Dropdown, DropdownMenu, Avatar, Button} from "@nextui-org/react";
+import { Navbar, NavbarBrand, NavbarContent, NavbarItem, Link, Input, DropdownItem, DropdownTrigger, Dropdown, DropdownMenu, Avatar, Button } from "@nextui-org/react";
+import { signIn, signOut, useSession } from "next-auth/react";
 
 export default function NavBar() {
+  const { data: session, status }: any = useSession<any>()
   return (
     <Navbar isBlurred isBordered className="bg-black">
       <NavbarBrand>
@@ -25,7 +27,15 @@ export default function NavBar() {
       </NavbarContent>
       <NavbarContent justify="end">
         <NavbarItem className="hidden lg:flex">
-          <Link href="#">Login</Link>
+          <Button onClick={() => {
+            status !== "authenticated" ? signIn("spotify") : signOut()
+          }}>
+            {
+              status === "authenticated" ?
+                session.user.display_name
+                :
+                "Login"
+            }</Button>
         </NavbarItem>
       </NavbarContent>
     </Navbar>
