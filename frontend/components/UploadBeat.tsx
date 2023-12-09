@@ -3,7 +3,7 @@ import React, { useState, useRef } from 'react';
 import axios from 'axios';
 import { Button } from '@nextui-org/react';
 
-const UploadBeat = ({ setStep }: any) => {
+const UploadBeat = ({ setStep, plagiarism, setPlagiarism, setIscopied }: any) => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -21,17 +21,27 @@ const UploadBeat = ({ setStep }: any) => {
     try {
       const formData = new FormData();
       formData.append('audio', selectedFile);
-
-      // Replace 'YOUR_BACKEND_API_ENDPOINT' with the actual Django backend API endpoint
-      // const response = await axios.post('YOUR_BACKEND_API_ENDPOINT', formData, {
-      //   headers: {
-      //     'Content-Type': 'multipart/form-data',
-      //   },
-      // });
-
-      // console.log('File uploaded:', response.data.fileName);
-      // You can perform additional actions after successful upload
       setStep(2)
+      // Replace 'YOUR_BACKEND_API_ENDPOINT' with the actual Django backend API endpoint
+      const response = await axios.post('https://95ce-14-195-9-98.ngrok-free.app/audio/process/', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+
+      console.log('File uploaded:', response.data);
+      // You can perform additional actions after successful upload
+      if (response.data.status === false) {
+        console.log("error processing")
+      }
+      if (response.data.hasPlagiarism === true) {
+        setIscopied(true)
+        setPlagiarism(response.data.similarity)
+      }
+      else {
+        setIscopied(false)
+      }
+      
     } catch (error: any) {
       console.error('Error uploading file:', error.message);
     }
@@ -44,6 +54,7 @@ const UploadBeat = ({ setStep }: any) => {
   };
 
   return (
+    <div className='grid'>
     <div className='flex gap-4 mt-2'>
       <input
         type="file"
@@ -59,6 +70,12 @@ const UploadBeat = ({ setStep }: any) => {
       <Button onClick={handleUpload} color='primary' variant='flat'>
         Upload
       </Button>
+      </div>
+      {/* <div>
+        {
+          plagiarism ? <div className='text-danger'>Detected a {(plagiarism * 100).toFixed(2)} % similarity to one of our beats</div> : <></>
+        }
+      </div> */}
     </div>
   );
 };

@@ -3,21 +3,11 @@ import React, { useState, useEffect } from 'react';
 import styles from './Loader.module.css'; // Import the CSS module for styling
 import { Spinner } from '@nextui-org/react';
 
-const Loader = ({setStep, step}: any) => {
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setLoading(false);
-      setStep(3)
-    }, 2000);
-    // Clear the timer when the component is unmounted or when loading is done
-    return () => clearTimeout(timer);
-  }, []);
+const Loader = ({setStep, step, plagiarism, iscopied}: any) => {
 
   return (
-    <div>
-      {loading && <Spinner size='lg' />}
+    <div className='mt-2'>
+      {iscopied!==undefined ? iscopied === true ? <div className='text-danger'>{(plagiarism*100).toFixed(2)} % similarity to one song spotted</div>: <div className='text-success'>You are good to go!</div> : <Spinner size='lg' />}
       
     </div>
   );
