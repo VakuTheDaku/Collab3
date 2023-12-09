@@ -5,8 +5,11 @@ import librosa
 import numpy as np
 import IPython.display as ipd
 import soundfile as sf
-from pydub import AudioSegment
-from librosa import sequence
+from .utils import compute_spectrogram, split_and_fingerprint, compare_all_pairs_spectrograms
+import base64
+from .models import SpectrogramModel
+import pickle
+
 class SplitBackground(ListAPIView):
 
     def post(self, request):
@@ -35,52 +38,44 @@ class SplitBackground(ListAPIView):
             return Response({'status': False})
    
         
-class CompareSongs(ListAPIView):
 
-    def load_audio(self, audio_file):
-        audio = AudioSegment.from_file(audio_file)
-        return np.array(audio.get_array_of_samples(), dtype=np.float32) / 32768.0
 
-    def extract_features(self, audio):
-        chroma = librosa.feature.chroma_stft(y=audio, sr=44100)
-        return chroma
+class ProcessAudioAPI(ListAPIView):
+    def post(self, request):
+        audio = request.data['audio']
+        fingerprints = pickle.dumps(split_and_fingerprint(audio))
 
-    def calculate_similarity(self, features1, features2):
-        # Use dynamic time warping for sequence alignment
-        alignment, similarity_score = sequence.dtw(features1, features2)
+        spectrogram = np.array(compute_spectrogram(audio))
+        
+        
+        spectrogram_data = SpectrogramModel.objects.all()
+        max_id = 0
+        for spec in spectrogram_data:
+            max_id = max(max_id, spec.id)
+            with open(spec.spectrogram.path, 'rb') as f:
+                spec_data = np.load(f)
+                similarity = compare_all_pairs_spectrograms(spec_data, spectrogram)
 
-        return similarity_score
+                if similarity > 0.5:
+                    data = {
+                        'status': True,
+                        'hasPlagiarism': True,
+                    }
+                    return Response(data)
+        with open(f'./spectrogram/spectrogram_{max_id}.npy', 'wb') as f:
+            np.save(f, spectrogram)
+        spectrogram_model = SpectrogramModel.objects.create(
+            spectrogram=f'./spectrogram/spectrogram_{max_id}.npy'
+        )
+        spectrogram_model.save()
 
-    def post(self, request, *args, **kwargs):
-        try:
-            print(request.FILES)
-            # Get the uploaded files
-            song1_file = request.FILES.get('song1')
-            song2_file = request.FILES.get('song2')
+       
+        data = {
+            'status': True,
+            'hasPlagiarism': False,
+            'fingerprints': base64.b64encode(fingerprints),
+            'spectrogram': base64.b64encode(spectrogram),
 
-            # Load audio files
-            audio1 = self.load_audio(song1_file)
-            audio2 = self.load_audio(song2_file)
-
-            # Extract features
-            features1 = self.extract_features(audio1)
-            features2 = self.extract_features(audio2)
-
-            # Calculate similarity score using DTW
-            similarity_score = self.calculate_similarity(features1, features2)
-
-            # Define a threshold for plagiarism detection
-            threshold = 10000  # Adjust this value based on your requirements
-
-            # Check if the similarity score exceeds the threshold
-            is_plagiarized = similarity_score < threshold
-
-            is_plagiarized = np.count_nonzero(is_plagiarized) / len(is_plagiarized)
-
-            return Response({
-                'status': True,
-                'is_plagiarized': is_plagiarized
-            })
-        except Exception as e:
-            print(e)
-            return Response({'status': False, 'error': str(e)})
+        }
+        
+        return Response(data)

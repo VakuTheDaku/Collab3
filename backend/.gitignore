@@ -1,7 +1,7 @@
 dev/
 
 test/
-
+spectrogram/
 backend/dev_settings.py
 
 db.sqlite3
