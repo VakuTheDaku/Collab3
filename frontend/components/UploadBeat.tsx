@@ -3,6 +3,7 @@ import React, { useState, useRef } from 'react';
 import axios from 'axios';
 import { Button } from '@nextui-org/react';
 import lighthouse from '@lighthouse-web3/sdk'
+import { uploadAudioFile } from '@/utils/upload';
 
 const UploadBeat = ({ setStep, plagiarism, setPlagiarism, setIscopied }: any) => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -22,10 +23,17 @@ const UploadBeat = ({ setStep, plagiarism, setPlagiarism, setIscopied }: any) =>
     try {
       const formData = new FormData();
       formData.append('audio', selectedFile);
-      
-      const output = await lighthouse.upload(selectedFile, "eb83b657.ac449ae61bde43869b2a34dcd4c9762a", false)
-      console.log('File Status:', output)
-      const keyResponse = await lighthouse.generateKey("eb83b657.ac449ae61bde43869b2a34dcd4c9762a")
+      console.log("selected File", selectedFile)
+      await uploadAudioFile(selectedFile, "myaudio.mp3")
+      // const output = await lighthouse.upload(selectedFile, "eb83b657.ac449ae61bde43869b2a34dcd4c9762a", false)
+      // console.log('File Status:', output)
+      // const keyResponse = await lighthouse.generateKey("eb83b657.ac449ae61bde43869b2a34dcd4c9762a")
+      // const pubResponse = await lighthouse.publishRecord(
+      //   output.data.Hash,
+      //   keyResponse.data.ipnsName,
+      //   "eb83b657.ac449ae61bde43869b2a34dcd4c9762a"
+      // );
+      // console.log(pubResponse.data);
       setStep(2)
       // Replace 'YOUR_BACKEND_API_ENDPOINT' with the actual Django backend API endpoint
       const response = await axios.post('https://95ce-14-195-9-98.ngrok-free.app/audio/process/', formData, {
