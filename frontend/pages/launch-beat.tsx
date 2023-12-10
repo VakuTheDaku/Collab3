@@ -9,7 +9,7 @@ export default function Sell() {
   const [plagiarism, setPlagiarism] = useState<number>();
   const launchTypes = ["Mint", "Raffles", "Auctions"]
   const [selected, setSelected] = useState<any>()
-  const [step, setStep] = useState<number>(4)
+  const [step, setStep] = useState<number>(0)
   const [iscopied, setIscopied] = useState(undefined)
 
   return (
