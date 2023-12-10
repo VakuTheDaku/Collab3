@@ -7,8 +7,10 @@ export default function App({
   pageProps: { session, ...pageProps },
 }: AppProps) {
   return (
+    <div className='min-h-screen bg-black'>
     <SessionProvider session={session}>
       <Component {...pageProps} />
     </SessionProvider>
+    </div>
   )
 }
