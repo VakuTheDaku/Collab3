@@ -1,1 +1,0 @@
-export const SECRET_KEY = "ced96deeaac1f3c3efea5a2f3813e2b63c4c19b3969a80b388436b852186ece7"

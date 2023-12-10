@@ -2,9 +2,10 @@
 import React from 'react';
 import NavBar from '@/components/NavBar';
 import AudioCardProfile from '@/components/AudioCardProfile';
+import { useSession } from 'next-auth/react';
 
 export default function Profile() {
-  const userName = 'Your Name'; // Replace with the user's name
+  const {data: session, status}: any = useSession<any>()
   const audioData = [
     {
       title: 'Audio 1',
@@ -30,7 +31,7 @@ export default function Profile() {
     <div className="bg-black">
       <NavBar />
       <div className="text-white text-center p-6">
-        <p className="text-lg font-bold">Hey, {userName}</p>
+        <p className="text-lg font-bold">Hey {status==="authenticated" ? session.user.display_name: "Login first"}</p>
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 p-4">
         {audioData.map((audio, index) => (

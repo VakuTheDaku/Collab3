@@ -3,7 +3,6 @@ import React, { useState, useRef } from 'react';
 import axios from 'axios';
 import { Button } from '@nextui-org/react';
 import lighthouse from '@lighthouse-web3/sdk'
-import { uploadAudioFile } from '@/utils/upload';
 
 const UploadBeat = ({ setStep, plagiarism, setPlagiarism, setIscopied }: any) => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -24,7 +23,10 @@ const UploadBeat = ({ setStep, plagiarism, setPlagiarism, setIscopied }: any) =>
       const formData = new FormData();
       formData.append('audio', selectedFile);
       console.log("selected File", selectedFile)
-      await uploadAudioFile(selectedFile, "myaudio.mp3")
+      // await fetch('/uploaded-audio.mp3', {
+      //   method: 'PUT',
+      //   body: formData,
+      // });
       // const output = await lighthouse.upload(selectedFile, "eb83b657.ac449ae61bde43869b2a34dcd4c9762a", false)
       // console.log('File Status:', output)
       // const keyResponse = await lighthouse.generateKey("eb83b657.ac449ae61bde43869b2a34dcd4c9762a")

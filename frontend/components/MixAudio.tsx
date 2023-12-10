@@ -1,4 +1,5 @@
 // components/AudioMixer.tsx
+import { Button } from '@nextui-org/react';
 import React, { useRef, useState } from 'react';
 
 const AudioMixer: React.FC = () => {
@@ -85,14 +86,19 @@ const AudioMixer: React.FC = () => {
         <p className="mb-4">Audio 2</p>
         <input type="file" accept="audio/*" onChange={(e) => handleFileChange(e, 1)} />
       </div>
+      <div className='grid gap-4'>
+        <Button
+          color='primary'
+          onClick={handleMixAndPlayButtonClick}
+          disabled={playing}
+        >
+          {playing ? 'Mixing and Playing...' : 'Mix and Play Audio'}
+        </Button>
 
-      <button
-        className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 p-10 flex items-center justify-center"
-        onClick={handleMixAndPlayButtonClick}
-        disabled={playing}
-      >
-        {playing ? 'Mixing and Playing...' : 'Mix and Play Audio'}
-      </button>
+        <Button color='warning' variant="bordered">
+          Fuse with your music ?
+        </Button>
+      </div>
     </div>
   );
 };

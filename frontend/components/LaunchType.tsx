@@ -60,7 +60,6 @@ export default function LaunchType() {
                             <div className="mt-2">
                                 <form onSubmit={handleMintSubmit} className="bg-black">
                                     <Input onChange={handleMintInputChange} name="price" type="number" label="Price" className="w-1/2 bg-opacity-10 bg-slate-200" />
-                                    <Button className="mt-2" variant="flat" color="secondary" type="submit">Launch Mint</Button>
                                 </form>
                             </div>
                         </CardBody>

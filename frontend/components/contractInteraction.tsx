@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { ethers } from 'ethers';
 import Web3 from 'web3';
+import { Button } from '@nextui-org/react';
 
 
 declare global {
@@ -671,9 +672,9 @@ const ContractInteraction: React.FC = () => {
 
     return (
         <div>
-            <button onClick={mintNFT}>
-                mint
-            </button>
+            <Button color='secondary' variant='bordered' onClick={mintNFT}>
+                Launch Mint
+            </Button>
         </div>
     );
 };
