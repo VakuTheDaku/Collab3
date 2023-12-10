@@ -9,7 +9,7 @@ export default function NavBar() {
   return (
     <Navbar isBlurred isBordered className="bg-black">
       <NavbarBrand>
-        <p className="font-bold text-inherit">COLLAB 3</p>
+        <p className="font-bold text-inherit">0xBeat</p>
       </NavbarBrand>
       <NavbarContent className="hidden sm:flex gap-4" justify="center">
         <NavbarItem>
