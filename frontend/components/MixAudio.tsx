@@ -76,11 +76,21 @@ const AudioMixer: React.FC = () => {
   };
 
   return (
-    <div>
-      <input type="file" accept="audio/*" onChange={(e) => handleFileChange(e, 0)} />
-      <input type="file" accept="audio/*" onChange={(e) => handleFileChange(e, 1)} />
+    <div className="max-w-md mx-auto overflow-hidden rounded-md shadow-lg p-4 space-y-4">
+      <div className="p-10 flex flex-col items-center">
+        <p className="mb-4">Audio 1</p>
+        <input type="file" accept="audio/*" onChange={(e) => handleFileChange(e, 0)} />
+      </div>
+      <div className="p-10 flex flex-col items-center">
+        <p className="mb-4">Audio 2</p>
+        <input type="file" accept="audio/*" onChange={(e) => handleFileChange(e, 1)} />
+      </div>
 
-      <button onClick={handleMixAndPlayButtonClick} disabled={playing}>
+      <button
+        className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 p-10 flex items-center justify-center"
+        onClick={handleMixAndPlayButtonClick}
+        disabled={playing}
+      >
         {playing ? 'Mixing and Playing...' : 'Mix and Play Audio'}
       </button>
     </div>

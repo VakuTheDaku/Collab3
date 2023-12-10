@@ -10,8 +10,8 @@ export default function NavBar() {
       </NavbarBrand>
       <NavbarContent className="hidden sm:flex gap-4" justify="center">
         <NavbarItem>
-          <Link href="/music" className="text-white">
-            Music
+          <Link href="/profile" className="text-white">
+            Profile
           </Link>
         </NavbarItem>
         <NavbarItem isActive>
