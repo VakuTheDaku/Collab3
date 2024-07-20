@@ -21,7 +21,7 @@ const ContractInteraction: React.FC = () => {
         if (typeof window.ethereum !== 'undefined') {
 
             //@ts-ignore
-            const provider = new ethers.providers.JsonRpcProvider("https://polygon-mumbai.infura.io/v3/c7e699cb03ba449c9bc140dc464cdace");            //@ts-ignore
+            const provider = new ethers.providers.JsonRpcProvider("");            //@ts-ignore
             const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
 
             // Get the signer from the provider

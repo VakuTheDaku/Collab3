@@ -4,7 +4,7 @@ import { ethers } from "ethers"
 import {SECRET_KEY} from './config'
 export default async function mintNFT( uri : string) {
   const contractAddress = CONTRACT_ADDRESS; // Replace with the actual contract address
-  const provider = new ethers.providers.JsonRpcProvider("https://polygon-mumbai.infura.io/v3/c7e699cb03ba449c9bc140dc464cdace"); // Replace with your Infura API key
+  const provider = new ethers.providers.JsonRpcProvider(""); // Replace with your Infura API key
   const signer = new ethers.Wallet(SECRET_KEY, provider); // Replace with the private key of the account that deployed the contract
   const contract = new ethers.Contract(contractAddress, ["function createCollectible(string tokenUri)", "function viewCollectible(uint256 tokenId) public view returns(string memory)"], signer);
   const gasLimit = 300000;

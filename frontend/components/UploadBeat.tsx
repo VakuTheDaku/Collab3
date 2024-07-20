@@ -38,7 +38,7 @@ const UploadBeat = ({ setStep, plagiarism, setPlagiarism, setIscopied }: any) =>
       // console.log(pubResponse.data);
       setStep(2)
       // Replace 'YOUR_BACKEND_API_ENDPOINT' with the actual Django backend API endpoint
-      const response = await axios.post('https://ca2d-14-195-9-98.ngrok-free.app/audio/process/', formData, {
+      const response = await axios.post('https://f6a8-14-195-9-98.ngrok-free.app/audio/process/', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -55,8 +55,9 @@ const UploadBeat = ({ setStep, plagiarism, setPlagiarism, setIscopied }: any) =>
       }
       else {
         setIscopied(false)
+        setStep(3)
       }
-
+      
     } catch (error: any) {
       console.error('Error uploading file:', error.message);
     }
